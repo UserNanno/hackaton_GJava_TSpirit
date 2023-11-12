@@ -1,4 +1,5 @@
 package view;
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,22 +10,28 @@ import model.Seccion;
 import persistencia.CursoDAO;
 import persistencia.HorarioDAO;
 import persistencia.SeccionDAO;
+
 public class JFrameAsignacionHorarios extends javax.swing.JFrame {
+
     private final CursoDAO cursoDAO = new CursoDAO();
     private final SeccionDAO seccionDAO = new SeccionDAO();
     private final HorarioDAO horarioDAO = new HorarioDAO();
     private List<CursoHorario> cursosHorarios; // Assuming you have a class to represent CursoHorario
     private DefaultTableModel tableModel;
+
     public JFrameAsignacionHorarios() {
         initComponents();
         initTable();
         cargarCursos(); // Load courses when the frame is initialized
-        cargarSecciones(); 
+        cargarSecciones();
+        cargarHorarios();
     }
+
     private void initTable() {
         // Initialize the JTable
         tableModel = (DefaultTableModel) jTable1.getModel();
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -140,7 +147,23 @@ public class JFrameAsignacionHorarios extends javax.swing.JFrame {
 
     private void cmbHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbHorarioActionPerformed
 
-        
+        String selectedCurso = (String) cmbCurso.getSelectedItem();
+        String selectedSeccion = (String) cmbSeccion.getSelectedItem();
+
+        /*// Iterate over the selected horarios and set the background color to green
+        for (int i = 0; i < cmbHorario.getItemCount(); i++) {
+            String selectedHorario = cmbHorario.getItemAt(i);
+            int rowIndex = getRowIndex(selectedHorario);
+            int columnIndex = getColumnIndex(selectedCurso, selectedSeccion);
+
+            if (rowIndex != -1 && columnIndex != -1) {
+                // Set the background color to green
+                jTable1.setValueAt("Occupied", rowIndex, columnIndex);
+                jTable1.getCellRenderer(rowIndex, columnIndex)
+                        .getTableCellRendererComponent(jTable1, null, false, false, rowIndex, columnIndex)
+                        .setBackground(Color.GREEN);
+            }
+        }*/
         }//GEN-LAST:event_cmbHorarioActionPerformed
 
     private void cmbSeccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSeccionActionPerformed
@@ -153,6 +176,7 @@ public class JFrameAsignacionHorarios extends javax.swing.JFrame {
             cmbCurso.addItem(curso.getNombre());
         }
     }
+
     private void cargarSecciones() {
         // Assuming seccionDAO is a class to retrieve Seccion objects from a database
         List<Seccion> secciones = seccionDAO.obtenerSecciones();
@@ -160,11 +184,11 @@ public class JFrameAsignacionHorarios extends javax.swing.JFrame {
             cmbSeccion.addItem(seccion.getNombre());
         }
     }
-    
+
     private void cargarHorarios() {
         List<CursoHorario> horarios = horarioDAO.obtenerHorarios();
         for (CursoHorario horario : horarios) {
-            cmbCurso.addItem(horario.getHorario());
+            cmbHorario.addItem(horario.getHorario());
         }
     }
 
@@ -189,5 +213,16 @@ public class JFrameAsignacionHorarios extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 
+   /* private int getRowIndex(String selectedHorario) {
+        // Implement logic to get the row index for the selected Horario
+        // You might need to adjust this based on your table structure
+        // For simplicity, assuming the horarios list is in the same order as rows
+        return obtenerHorarios("Selecciona").indexOf(selectedHorario);
+    }*/
 
+    private int getColumnIndex(String selectedCurso, String selectedSeccion) {
+        // Implement logic to get the column index for the selected Curso and Seccion
+        // You might need to adjust this based on your table structure
+        return cmbCurso.getSelectedIndex() + 1; // Assuming cmbCurso is the first column
+    }
 }

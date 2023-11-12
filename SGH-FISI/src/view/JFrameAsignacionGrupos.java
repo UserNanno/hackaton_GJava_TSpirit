@@ -208,8 +208,8 @@ public class JFrameAsignacionGrupos extends javax.swing.JFrame {
             DefaultTableModel modelo = (DefaultTableModel) tblSecciones.getModel();
             modelo.setValueAt(seccionSeleccionada, filaSeleccionada, 4); // Suponiendo que 4 es la columna de sección
             // Asignar la sección a la base de datos usando el método correspondiente de CursoDAO
-            int idCurso = obtenerIdCursoDesdeTabla(filaSeleccionada); // Asegúrate de obtener el ID del curso según la fila seleccionada
-            boolean asignacionExitosa = cursoDAO.asignarSeccionACurso(idCurso, seccionSeleccionada);
+            String codigoCurso = obtenerCodigoCursoDesdeTabla(filaSeleccionada);
+            boolean asignacionExitosa = cursoDAO.asignarSeccionACurso(codigoCurso, seccionSeleccionada);
 
             if (asignacionExitosa) {
                 JOptionPane.showMessageDialog(null, "Sección asignada al curso en la base de datos");
@@ -273,11 +273,10 @@ public class JFrameAsignacionGrupos extends javax.swing.JFrame {
         int filaSeleccionada = tblSecciones.getSelectedRow();
 
         if (filaSeleccionada != -1) {
-            int idCurso = obtenerIdCursoDesdeTabla(filaSeleccionada);
+            String codigoCurso = obtenerCodigoCursoDesdeTabla(filaSeleccionada);
             String seccionSeleccionada = cmbSeccion.getSelectedItem().toString(); // Nueva sección seleccionada
 
-            // Actualizar la sección del curso en la base de datos usando el método correspondiente de CursoDAO
-            boolean actualizacionExitosa = cursoDAO.actualizarSeccionCurso(idCurso, seccionSeleccionada);
+            boolean actualizacionExitosa = cursoDAO.actualizarSeccionCurso(codigoCurso, seccionSeleccionada);
 
             if (actualizacionExitosa) {
                 DefaultTableModel modelo = (DefaultTableModel) tblSecciones.getModel();
@@ -298,8 +297,8 @@ public class JFrameAsignacionGrupos extends javax.swing.JFrame {
             DefaultTableModel modelo = (DefaultTableModel) tblSecciones.getModel();
             modelo.setValueAt("", filaSeleccionada, 4); // Suponiendo que 4 es la columna de sección
             // Eliminar la sección del curso en la base de datos usando el método correspondiente de CursoDAO
-            int idCurso = obtenerIdCursoDesdeTabla(filaSeleccionada); // Asegúrate de obtener el ID del curso según la fila seleccionada
-            boolean eliminacionExitosa = cursoDAO.eliminarSeccionDeCurso(idCurso);
+            String codigoCurso = obtenerCodigoCursoDesdeTabla(filaSeleccionada);
+            boolean eliminacionExitosa = cursoDAO.eliminarSeccionDeCurso(codigoCurso);
 
             if (eliminacionExitosa) {
                 JOptionPane.showMessageDialog(null, "Sección eliminada del curso en la base de datos");
@@ -372,9 +371,7 @@ public class JFrameAsignacionGrupos extends javax.swing.JFrame {
         }
     }
 
-    private int obtenerIdCursoDesdeTabla(int filaSeleccionada) {
-        String valor = tblSecciones.getValueAt(filaSeleccionada, 0).toString();
-        return Integer.parseInt(valor);
+    private String obtenerCodigoCursoDesdeTabla(int filaSeleccionada) {
+        return tblSecciones.getValueAt(filaSeleccionada, 0).toString();
     }
-
 }

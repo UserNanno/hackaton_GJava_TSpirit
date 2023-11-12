@@ -72,15 +72,15 @@ public class CursoDAO {
         return cursos;
     }
 
-    public boolean actualizarSeccionCurso(int idCurso, String nuevaSeccion) {
+    public boolean actualizarSeccionCurso(String codigoCurso, String nuevaSeccion) {
         Connection conexion = ConexionDB.obtenerConexion();
         PreparedStatement ps = null;
 
         try {
-            String query = "UPDATE cursos SET id_seccion = (SELECT id_seccion FROM seccion WHERE nombre = ?) WHERE id_curso = ?";
+            String query = "UPDATE cursos SET id_seccion = (SELECT id_seccion FROM seccion WHERE nombre = ?) WHERE Codigo = ?";
             ps = conexion.prepareStatement(query);
             ps.setString(1, nuevaSeccion);
-            ps.setInt(2, idCurso);
+            ps.setString(2, codigoCurso);
             int filasAfectadas = ps.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException e) {
@@ -91,15 +91,15 @@ public class CursoDAO {
         }
     }
 
-    public boolean asignarSeccionACurso(int idCurso, String nuevaSeccion) {
+    public boolean asignarSeccionACurso(String codigoCurso, String nuevaSeccion) {
         Connection conexion = ConexionDB.obtenerConexion();
         PreparedStatement ps = null;
 
         try {
-            String query = "UPDATE cursos SET id_seccion = (SELECT id_seccion FROM seccion WHERE nombre = ?) WHERE id_curso = ?";
+            String query = "UPDATE cursos SET id_seccion = (SELECT id_seccion FROM seccion WHERE nombre = ?) WHERE Codigo = ?";
             ps = conexion.prepareStatement(query);
             ps.setString(1, nuevaSeccion);
-            ps.setInt(2, idCurso);
+            ps.setString(2, codigoCurso);
             int filasAfectadas = ps.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException e) {
@@ -110,14 +110,14 @@ public class CursoDAO {
         }
     }
 
-    public boolean eliminarSeccionDeCurso(int idCurso) {
+    public boolean eliminarSeccionDeCurso(String codigoCurso) {
         Connection conexion = ConexionDB.obtenerConexion();
         PreparedStatement ps = null;
 
         try {
-            String query = "UPDATE cursos SET id_seccion = NULL WHERE id_curso = ?";
+            String query = "UPDATE cursos SET id_seccion = NULL WHERE Codigo = ?";
             ps = conexion.prepareStatement(query);
-            ps.setInt(1, idCurso);
+            ps.setString(1, codigoCurso);
             int filasAfectadas = ps.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException e) {

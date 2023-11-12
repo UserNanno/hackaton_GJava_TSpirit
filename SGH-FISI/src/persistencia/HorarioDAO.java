@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import model.Curso;
 import model.CursoHorario;
 
 public class HorarioDAO {
@@ -18,14 +17,14 @@ public class HorarioDAO {
         ResultSet rs = null;
 
         try {
-            String query = "SELECT id_curso, nombre FROM cursos";
+            String query = "SELECT id_horario, hora FROM horarios";
             ps = conexion.prepareStatement(query);
             rs = ps.executeQuery();
 
             while (rs.next()) {
                 CursoHorario horario = new CursoHorario();
-                horario.setId(rs.getInt("id_curso"));
-                horario.setHorario(rs.getString("horario"));
+                horario.setId(rs.getInt("id_horario"));
+                horario.setHorario(rs.getString("hora"));
                 horarios.add(horario);
             }
         } catch (SQLException e) {
@@ -37,5 +36,5 @@ public class HorarioDAO {
         return horarios;
     }
 
-  
+ 
 }

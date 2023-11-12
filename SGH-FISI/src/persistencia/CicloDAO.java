@@ -6,32 +6,33 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import model.Seccion;
+import model.Ciclo;
 
-public class SeccionDAO {
-    public List<Seccion> obtenerSecciones() {
-        List<Seccion> secciones = new ArrayList<>();
+public class CicloDAO {
+
+    public List<Ciclo> obtenerCiclos() {
+        List<Ciclo> ciclos = new ArrayList<>();
         Connection conexion = ConexionDB.obtenerConexion();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
         try {
-            String query = "SELECT id_seccion, nombre FROM seccion";
+            String query = "SELECT id_ciclo, nombre FROM ciclos";
             ps = conexion.prepareStatement(query);
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                Seccion seccion = new Seccion();
-                seccion.setId(rs.getInt("id_seccion"));
-                seccion.setNombre(rs.getString("nombre"));
-                secciones.add(seccion);
+                Ciclo ciclo = new Ciclo();
+                ciclo.setIdCiclo(rs.getInt("id_ciclo"));
+                ciclo.setNombre(rs.getString("nombre"));
+                ciclos.add(ciclo);
             }
         } catch (SQLException e) {
-            System.out.println("Error al obtener secciones: " + e.getMessage());
+            System.out.println("Error al obtener ciclos: " + e.getMessage());
         } finally {
             // Cerrar ResultSet, PreparedStatement y la conexión
         }
 
-        return secciones;
+        return ciclos;
     }
 }

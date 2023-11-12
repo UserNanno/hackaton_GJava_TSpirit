@@ -6,14 +6,13 @@ import javax.swing.table.DefaultTableModel;
 import model.Curso;
 import model.CursoHorario;
 import model.Seccion;
-import persistencia.CicloDAO;
 import persistencia.CursoDAO;
+import persistencia.HorarioDAO;
 import persistencia.SeccionDAO;
-
 public class JFrameAsignacionHorarios extends javax.swing.JFrame {
-     private final CursoDAO cursoDAO = new CursoDAO();
+    private final CursoDAO cursoDAO = new CursoDAO();
     private final SeccionDAO seccionDAO = new SeccionDAO();
-
+    private final HorarioDAO horarioDAO = new HorarioDAO();
     private List<CursoHorario> cursosHorarios; // Assuming you have a class to represent CursoHorario
     private DefaultTableModel tableModel;
     public JFrameAsignacionHorarios() {
@@ -140,53 +139,15 @@ public class JFrameAsignacionHorarios extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbCursoActionPerformed
 
     private void cmbHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbHorarioActionPerformed
-    String selectedCurso = (String) cmbCurso.getSelectedItem();
-    String selectedSeccion = (String) cmbSeccion.getSelectedItem();
-    String selectedHorario = (String) cmbHorario.getSelectedItem();
 
-    // Update the table with the selected Curso, Seccion, and Horario
-    int rowIndex = getRowIndex(selectedHorario);
-    int columnIndex = getColumnIndex(selectedCurso, selectedSeccion);
-
-    if (rowIndex != -1 && columnIndex != -1) {
-        // Set the background color to green
-        jTable1.getCellRenderer(rowIndex, columnIndex).getTableCellRendererComponent(jTable1, null, false, false, rowIndex, columnIndex).setBackground(Color.GREEN);
-    }
+        
         }//GEN-LAST:event_cmbHorarioActionPerformed
 
     private void cmbSeccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSeccionActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbSeccionActionPerformed
-    private void cargarHorarios(List<String> horarios) {
-        cmbHorario.removeAllItems();
-        cmbHorario.addItem("Selecciona");
-        for (String horario : horarios) {
-            cmbHorario.addItem(horario);
-        }
-    }
-    
-    private List<String> obtenerHorarios(String curso) {
-        // Assuming cursosHorarios is a list that contains CursoHorario objects
-        List<String> horarios = new ArrayList<>();
-        for (CursoHorario ch : cursosHorarios) {
-            if (ch.getCurso().equals(curso)) {
-                horarios.add(ch.getHorario());
-            }
-        }
-        return horarios;
-    }
-   private int getRowIndex(String selectedHorario) {
-    // Implement logic to get the row index for the selected Horario
-    // You might need to adjust this based on your table structure
-    // For simplicity, assuming the horarios list is in the same order as rows
-    return obtenerHorarios("Selecciona").indexOf(selectedHorario);
-}
-   private int getColumnIndex(String selectedCurso, String selectedSeccion) {
-    // Implement logic to get the column index for the selected Curso and Seccion
-    // You might need to adjust this based on your table structure
-    return cmbCurso.getSelectedIndex() + 1; // Assuming cmbCurso is the first column
-}
-       private void cargarCursos() {
+
+    private void cargarCursos() {
         List<Curso> cursos = cursoDAO.obtenerCursos();
         for (Curso curso : cursos) {
             cmbCurso.addItem(curso.getNombre());
@@ -197,6 +158,13 @@ public class JFrameAsignacionHorarios extends javax.swing.JFrame {
         List<Seccion> secciones = seccionDAO.obtenerSecciones();
         for (Seccion seccion : secciones) {
             cmbSeccion.addItem(seccion.getNombre());
+        }
+    }
+    
+    private void cargarHorarios() {
+        List<CursoHorario> horarios = horarioDAO.obtenerHorarios();
+        for (CursoHorario horario : horarios) {
+            cmbCurso.addItem(horario.getHorario());
         }
     }
 

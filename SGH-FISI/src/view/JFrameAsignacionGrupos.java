@@ -32,13 +32,15 @@ public class JFrameAsignacionGrupos extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         cmbCurso = new javax.swing.JComboBox<>();
         cmbSeccion = new javax.swing.JComboBox<>();
-        btnAsignar = new javax.swing.JButton();
+        btnAgregar = new javax.swing.JButton();
         btnRetroceder = new javax.swing.JButton();
         cmbCiclo = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblSecciones = new javax.swing.JTable();
         btnBuscar = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -48,6 +50,7 @@ public class JFrameAsignacionGrupos extends javax.swing.JFrame {
 
         jLabel3.setText("Sección");
 
+        cmbCurso.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione" }));
         cmbCurso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbCursoActionPerformed(evt);
@@ -60,10 +63,10 @@ public class JFrameAsignacionGrupos extends javax.swing.JFrame {
             }
         });
 
-        btnAsignar.setText("Asignar Grupo");
-        btnAsignar.addActionListener(new java.awt.event.ActionListener() {
+        btnAgregar.setText("Asignar Grupo");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAsignarActionPerformed(evt);
+                btnAgregarActionPerformed(evt);
             }
         });
 
@@ -74,6 +77,7 @@ public class JFrameAsignacionGrupos extends javax.swing.JFrame {
             }
         });
 
+        cmbCiclo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione" }));
         cmbCiclo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbCicloActionPerformed(evt);
@@ -102,6 +106,20 @@ public class JFrameAsignacionGrupos extends javax.swing.JFrame {
             }
         });
 
+        btnEditar.setText("Editar Grupo");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+
+        btnEliminar.setText("Eliminar Grupo");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -111,15 +129,12 @@ public class JFrameAsignacionGrupos extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(31, 31, 31)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cmbCiclo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cmbCurso, 0, 120, Short.MAX_VALUE))
+                        .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(31, 31, 31)
+                                .addComponent(cmbCurso, 0, 313, Short.MAX_VALUE)
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3)
@@ -127,16 +142,23 @@ public class JFrameAsignacionGrupos extends javax.swing.JFrame {
                                         .addGap(67, 67, 67)
                                         .addComponent(cmbSeccion, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(18, 18, 18)
-                                .addComponent(btnAsignar)
-                                .addGap(58, 58, 58)
-                                .addComponent(btnRetroceder))
+                                .addComponent(btnAgregar)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnEditar)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnEliminar))
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(31, 31, 31)
+                                .addComponent(cmbCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(34, 34, 34)
-                                .addComponent(btnBuscar)))
-                        .addGap(0, 203, Short.MAX_VALUE)))
+                                .addComponent(btnBuscar)
+                                .addGap(35, 35, 35)
+                                .addComponent(btnRetroceder)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(494, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(370, 370, 370))
         );
@@ -145,22 +167,24 @@ public class JFrameAsignacionGrupos extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel1)
-                .addGap(38, 38, 38)
+                .addGap(16, 16, 16)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(btnBuscar)
+                    .addComponent(btnRetroceder))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(cmbSeccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAsignar)
-                    .addComponent(btnRetroceder))
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmbCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(btnBuscar))
-                .addGap(18, 18, 18)
+                    .addComponent(btnAgregar)
+                    .addComponent(btnEditar)
+                    .addComponent(btnEliminar))
+                .addGap(54, 54, 54)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(85, Short.MAX_VALUE))
         );
 
         pack();
@@ -174,9 +198,28 @@ public class JFrameAsignacionGrupos extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbSeccionActionPerformed
 
-    private void btnAsignarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignarActionPerformed
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnAsignarActionPerformed
+        String cursoSeleccionado = cmbCurso.getSelectedItem().toString();
+        String seccionSeleccionada = cmbSeccion.getSelectedItem().toString();
+
+        int filaSeleccionada = tblSecciones.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            DefaultTableModel modelo = (DefaultTableModel) tblSecciones.getModel();
+            modelo.setValueAt(seccionSeleccionada, filaSeleccionada, 4); // Suponiendo que 4 es la columna de sección
+            // Asignar la sección a la base de datos usando el método correspondiente de CursoDAO
+            int idCurso = obtenerIdCursoDesdeTabla(filaSeleccionada); // Asegúrate de obtener el ID del curso según la fila seleccionada
+            boolean asignacionExitosa = cursoDAO.asignarSeccionACurso(idCurso, seccionSeleccionada);
+
+            if (asignacionExitosa) {
+                JOptionPane.showMessageDialog(null, "Sección asignada al curso en la base de datos");
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al asignar la sección al curso en la base de datos");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor, seleccione una fila para agregar la sección.");
+        }
+    }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnRetrocederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetrocederActionPerformed
         // TODO add your handling code here:
@@ -187,10 +230,7 @@ public class JFrameAsignacionGrupos extends javax.swing.JFrame {
 
     private void cmbCicloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCicloActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cmbCicloActionPerformed
-
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        String nombreCicloSeleccionado = cmbCiclo.getSelectedItem().toString();
+        /* String nombreCicloSeleccionado = cmbCiclo.getSelectedItem().toString();
 
         // Buscar el objeto Ciclo correspondiente al nombre seleccionado en el JComboBox
         Ciclo cicloSeleccionado = null;
@@ -206,8 +246,70 @@ public class JFrameAsignacionGrupos extends javax.swing.JFrame {
             cargarCursosPorCiclo(idCicloSeleccionado);
         } else {
             JOptionPane.showMessageDialog(null, "Ciclo no encontrado");
+        } */
+    }//GEN-LAST:event_cmbCicloActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        String nombreCicloSeleccionado = cmbCiclo.getSelectedItem().toString();
+        Ciclo cicloSeleccionado = null;
+
+        for (Ciclo ciclo : cicloDAO.obtenerCiclos()) {
+            if (ciclo.getNombre().equals(nombreCicloSeleccionado)) {
+                cicloSeleccionado = ciclo;
+                break;
+            }
+        }
+
+        if (cicloSeleccionado != null) {
+            int idCicloSeleccionado = cicloSeleccionado.getIdCiclo();
+            cargarCursosPorCiclo(idCicloSeleccionado);
+        } else {
+            JOptionPane.showMessageDialog(null, "Ciclo no encontrado");
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // TODO add your handling code here:
+        int filaSeleccionada = tblSecciones.getSelectedRow();
+
+        if (filaSeleccionada != -1) {
+            int idCurso = obtenerIdCursoDesdeTabla(filaSeleccionada);
+            String seccionSeleccionada = cmbSeccion.getSelectedItem().toString(); // Nueva sección seleccionada
+
+            // Actualizar la sección del curso en la base de datos usando el método correspondiente de CursoDAO
+            boolean actualizacionExitosa = cursoDAO.actualizarSeccionCurso(idCurso, seccionSeleccionada);
+
+            if (actualizacionExitosa) {
+                DefaultTableModel modelo = (DefaultTableModel) tblSecciones.getModel();
+                modelo.setValueAt(seccionSeleccionada, filaSeleccionada, 4); // Suponiendo que 4 es la columna de sección
+                JOptionPane.showMessageDialog(null, "Sección actualizada en la base de datos");
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al actualizar la sección en la base de datos");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor, seleccione una fila para editar la sección.");
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        int filaSeleccionada = tblSecciones.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            DefaultTableModel modelo = (DefaultTableModel) tblSecciones.getModel();
+            modelo.setValueAt("", filaSeleccionada, 4); // Suponiendo que 4 es la columna de sección
+            // Eliminar la sección del curso en la base de datos usando el método correspondiente de CursoDAO
+            int idCurso = obtenerIdCursoDesdeTabla(filaSeleccionada); // Asegúrate de obtener el ID del curso según la fila seleccionada
+            boolean eliminacionExitosa = cursoDAO.eliminarSeccionDeCurso(idCurso);
+
+            if (eliminacionExitosa) {
+                JOptionPane.showMessageDialog(null, "Sección eliminada del curso en la base de datos");
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al eliminar la sección del curso en la base de datos");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor, seleccione una fila para eliminar la sección.");
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     public static void main(String args[]) {
 
@@ -217,8 +319,10 @@ public class JFrameAsignacionGrupos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAsignar;
+    private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnRetroceder;
     private javax.swing.JComboBox<String> cmbCiclo;
     private javax.swing.JComboBox<String> cmbCurso;
@@ -238,12 +342,15 @@ public class JFrameAsignacionGrupos extends javax.swing.JFrame {
 
     private void cargarCursosPorCiclo(int idCiclo) {
         List<Curso> cursos = cursoDAO.obtenerCursosPorCiclo(idCiclo);
-
+        cmbCurso.removeAllItems(); // Limpiamos el combo box de cursos
         DefaultTableModel modelo = (DefaultTableModel) tblSecciones.getModel();
         modelo.setRowCount(0);
 
         for (Curso curso : cursos) {
             modelo.addRow(new Object[]{curso.getCodigo(), curso.getNombre(), curso.getCantidadAlumnos(), curso.getPlanEstudios(), curso.getSeccion()});
+        }
+        for (Curso curso : cursos) {
+            cmbCurso.addItem(curso.getNombre());
         }
     }
 
@@ -263,6 +370,11 @@ public class JFrameAsignacionGrupos extends javax.swing.JFrame {
         for (Ciclo ciclo : ciclos) {
             cmbCiclo.addItem(ciclo.toString());
         }
+    }
+
+    private int obtenerIdCursoDesdeTabla(int filaSeleccionada) {
+        String valor = tblSecciones.getValueAt(filaSeleccionada, 0).toString();
+        return Integer.parseInt(valor);
     }
 
 }

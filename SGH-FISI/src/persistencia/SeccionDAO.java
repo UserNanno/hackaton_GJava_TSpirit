@@ -9,6 +9,7 @@ import java.util.List;
 import model.Seccion;
 
 public class SeccionDAO {
+
     public List<Seccion> obtenerSecciones() {
         List<Seccion> secciones = new ArrayList<>();
         Connection conexion = ConexionDB.obtenerConexion();
@@ -34,4 +35,60 @@ public class SeccionDAO {
 
         return secciones;
     }
+
+    public boolean agregarSeccion(Seccion seccion) {
+        Connection conexion = ConexionDB.obtenerConexion();
+        PreparedStatement ps = null;
+
+        try {
+            String query = "INSERT INTO seccion (nombre) VALUES (?)";
+            ps = conexion.prepareStatement(query);
+            ps.setString(1, seccion.getNombre());
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas > 0;
+        } catch (SQLException e) {
+            System.out.println("Error al agregar sección: " + e.getMessage());
+            return false;
+        } finally {
+            // Cerrar PreparedStatement y la conexión
+        }
+    }
+
+    public boolean editarSeccion(Seccion seccion) {
+        Connection conexion = ConexionDB.obtenerConexion();
+        PreparedStatement ps = null;
+
+        try {
+            String query = "UPDATE seccion SET nombre = ? WHERE id_seccion = ?";
+            ps = conexion.prepareStatement(query);
+            ps.setString(1, seccion.getNombre());
+            ps.setInt(2, seccion.getId());
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas > 0;
+        } catch (SQLException e) {
+            System.out.println("Error al editar sección: " + e.getMessage());
+            return false;
+        } finally {
+            // Cerrar PreparedStatement y la conexión
+        }
+    }
+
+    public boolean eliminarSeccion(int idSeccion) {
+        Connection conexion = ConexionDB.obtenerConexion();
+        PreparedStatement ps = null;
+
+        try {
+            String query = "DELETE FROM seccion WHERE id_seccion = ?";
+            ps = conexion.prepareStatement(query);
+            ps.setInt(1, idSeccion);
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas > 0;
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar sección: " + e.getMessage());
+            return false;
+        } finally {
+            // Cerrar PreparedStatement y la conexión
+        }
+    }
+
 }

@@ -72,4 +72,60 @@ public class CursoDAO {
         return cursos;
     }
 
+    public boolean actualizarSeccionCurso(int idCurso, String nuevaSeccion) {
+        Connection conexion = ConexionDB.obtenerConexion();
+        PreparedStatement ps = null;
+
+        try {
+            String query = "UPDATE cursos SET id_seccion = (SELECT id_seccion FROM seccion WHERE nombre = ?) WHERE id_curso = ?";
+            ps = conexion.prepareStatement(query);
+            ps.setString(1, nuevaSeccion);
+            ps.setInt(2, idCurso);
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas > 0;
+        } catch (SQLException e) {
+            System.out.println("Error al actualizar la sección del curso: " + e.getMessage());
+            return false;
+        } finally {
+            // Cerrar PreparedStatement y la conexión
+        }
+    }
+
+    public boolean asignarSeccionACurso(int idCurso, String nuevaSeccion) {
+        Connection conexion = ConexionDB.obtenerConexion();
+        PreparedStatement ps = null;
+
+        try {
+            String query = "UPDATE cursos SET id_seccion = (SELECT id_seccion FROM seccion WHERE nombre = ?) WHERE id_curso = ?";
+            ps = conexion.prepareStatement(query);
+            ps.setString(1, nuevaSeccion);
+            ps.setInt(2, idCurso);
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas > 0;
+        } catch (SQLException e) {
+            System.out.println("Error al asignar la sección al curso: " + e.getMessage());
+            return false;
+        } finally {
+            // Cerrar PreparedStatement y la conexión
+        }
+    }
+
+    public boolean eliminarSeccionDeCurso(int idCurso) {
+        Connection conexion = ConexionDB.obtenerConexion();
+        PreparedStatement ps = null;
+
+        try {
+            String query = "UPDATE cursos SET id_seccion = NULL WHERE id_curso = ?";
+            ps = conexion.prepareStatement(query);
+            ps.setInt(1, idCurso);
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas > 0;
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar la sección del curso: " + e.getMessage());
+            return false;
+        } finally {
+            // Cerrar PreparedStatement y la conexión
+        }
+    }
+
 }

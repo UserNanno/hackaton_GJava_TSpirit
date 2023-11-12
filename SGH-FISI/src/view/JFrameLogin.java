@@ -7,6 +7,11 @@ public class JFrameLogin extends javax.swing.JFrame {
 
     public JFrameLogin() {
         initComponents();
+
+        // Simular CLICK en btnIngresar cuando está en el campo txtContrasena
+        txtContrasena.addActionListener((java.awt.event.ActionEvent evt) -> {
+            btnIngresar.doClick();
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -111,17 +116,19 @@ public class JFrameLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
         String usuario = txtUsuario.getText();
         String contrasena = txtContrasena.getText();
-        
-        LoginController loginController  = new LoginController();
-        
+
+        LoginController loginController = new LoginController();
+
         if (loginController.autenticar(usuario, contrasena)) {
-           JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso. Bienvenido " + usuario);
+            JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso. Bienvenido " + usuario);
+            this.dispose();
+            JFrameMain main = new JFrameMain();
+            main.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(null, "Credenciales inválidas. Inténtalo de nuevo");
         }
-        
-        JFrameMain main = new JFrameMain();
-        main.setVisible(true);
+
+
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed

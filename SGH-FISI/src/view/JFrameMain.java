@@ -148,10 +148,16 @@ public class JFrameMain extends javax.swing.JFrame {
 
     private void btnVerGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerGruposActionPerformed
         // TODO add your handling code here:
+        this.dispose();
+        JFrameAsignacionGrupos asignacionGrupos = new JFrameAsignacionGrupos();
+        asignacionGrupos.setVisible(true);
     }//GEN-LAST:event_btnVerGruposActionPerformed
 
     private void btnEditarGruposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarGruposActionPerformed
         // TODO add your handling code here:
+        this.dispose();
+        JFrameAsignacionGrupos asignacionGrupos = new JFrameAsignacionGrupos();
+        asignacionGrupos.setVisible(true);
     }//GEN-LAST:event_btnEditarGruposActionPerformed
 
     private void btnVerHorariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerHorariosActionPerformed

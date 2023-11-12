@@ -1,6 +1,6 @@
 package controller;
 
-import model.UsuarioDAO;
+import persistencia.UsuarioDAO;
 
 public class LoginController {
     private UsuarioDAO usuarioDAO = new UsuarioDAO();

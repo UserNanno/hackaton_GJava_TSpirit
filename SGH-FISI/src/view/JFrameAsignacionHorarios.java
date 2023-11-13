@@ -124,12 +124,17 @@ public class JFrameAsignacionHorarios extends javax.swing.JFrame {
         });
 
         btnRetroceder.setText("Retroceder");
+        btnRetroceder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRetrocederActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 946, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
             .addGroup(layout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -137,15 +142,13 @@ public class JFrameAsignacionHorarios extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(31, 31, 31)
-                            .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGap(151, 151, 151)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(jLabel4))
                         .addGap(27, 27, 27)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cmbSeccion, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(cmbHorario, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(60, 60, 60)
@@ -155,21 +158,26 @@ public class JFrameAsignacionHorarios extends javax.swing.JFrame {
                                 .addGap(104, 104, 104)
                                 .addComponent(jButtonAgregar)
                                 .addGap(73, 73, 73)
-                                .addComponent(jButtonBorrar)
-                                .addGap(45, 45, 45)
-                                .addComponent(btnRetroceder)))))
-                .addContainerGap(37, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnRetroceder)
+                                    .addComponent(jButtonBorrar)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cmbSeccion, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(165, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addGap(2, 2, 2)
+                .addComponent(btnRetroceder, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(cmbCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(cmbSeccion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -180,8 +188,7 @@ public class JFrameAsignacionHorarios extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(cmbdia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonAgregar)
-                    .addComponent(jButtonBorrar)
-                    .addComponent(btnRetroceder))
+                    .addComponent(jButtonBorrar))
                 .addGap(42, 42, 42)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -239,36 +246,30 @@ private void cargarDias() {
         JOptionPane.showMessageDialog(this, "Please select a valid cell (excluding the first column) to delete.", "No Valid Cell Selected", JOptionPane.WARNING_MESSAGE);
     }
     }//GEN-LAST:event_jButtonBorrarActionPerformed
+
+    private void btnRetrocederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetrocederActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        JFrameMain main = new JFrameMain();
+        main.setVisible(true);
+    }//GEN-LAST:event_btnRetrocederActionPerformed
 private void updateTable() {
     // Check if both horario and dia are selected
-Map<String, Integer> courseCountMap = new HashMap<>();
+   if (cmbHorario.getSelectedIndex() != 0 && cmbdia.getSelectedIndex() != 0) {
+        // Get the selected horario and dia
+        String selectedHorario = cmbHorario.getSelectedItem().toString();
+        String selectedDia = cmbdia.getSelectedItem().toString();
 
-if (cmbHorario.getSelectedIndex() != 0 && cmbdia.getSelectedIndex() != 0) {
-    // Get the selected horario and dia
-    String selectedHorario = cmbHorario.getSelectedItem().toString();
-    String selectedDia = cmbdia.getSelectedItem().toString();
-
-    // Form a key for the (horario, dia) combination
-    String key = selectedHorario + "_" + selectedDia;
-
-    // Check if the course count for the given combination has reached the maximum limit
-    if (courseCountMap.containsKey(key) && courseCountMap.get(key) >= 2) {
-        JOptionPane.showMessageDialog(this, "You can add a course to this combination a maximum of 2 times.", "Limit Exceeded", JOptionPane.WARNING_MESSAGE);
-    } else {
         // Find the indices in the tables
         int horarioIndex = horarioDAO.obtenerHorarioIndex(selectedHorario);
         int diaIndex = Arrays.asList("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado").indexOf(selectedDia);
 
         // Update the corresponding cell in the table
         if (horarioIndex != -1 && diaIndex != -1) {
-            // Assuming jTable1 is your JTable
-            jTable1.setValueAt("Pintar", horarioIndex, diaIndex + 1); // Assuming you want to set the cell value to "Pintar"
-
-            // Update the course count for the given combination
-            courseCountMap.put(key, courseCountMap.getOrDefault(key, 0) + 1);
+    jTable1.getCellRenderer(horarioIndex, diaIndex + 1).getTableCellRendererComponent(jTable1,
+            null, false, false, horarioIndex, diaIndex + 1).setBackground(Color.GREEN);
         }
-    }
-}
+   }
 }
     private void cargarCursos() {
         List<Curso> cursos = cursoDAO.obtenerCursos();

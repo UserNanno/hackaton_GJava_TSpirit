@@ -4,6 +4,14 @@ public class JFrameMain extends javax.swing.JFrame {
 
     public JFrameMain() {
         initComponents();
+        btnSemestre.setVisible(false);
+        btnCursos.setVisible(false);
+        btnEditarGrupos.setVisible(false);
+        btnEditarHorarios.setVisible(false);
+        btnEditarSalones.setVisible(false);
+        btnVerSalones.setVisible(false);
+        btnVerHorarios.setVisible(false);
+        btnVerGrupos.setVisible(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -24,7 +32,7 @@ public class JFrameMain extends javax.swing.JFrame {
         btnSalir = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        btmSemestre = new javax.swing.JButton();
+        btnSemestre = new javax.swing.JButton();
         btnCursos = new javax.swing.JButton();
 
         jButton1.setText("jButton1");
@@ -92,10 +100,10 @@ public class JFrameMain extends javax.swing.JFrame {
 
         jLabel6.setText("Semestres");
 
-        btmSemestre.setText("Editar");
-        btmSemestre.addActionListener(new java.awt.event.ActionListener() {
+        btnSemestre.setText("Editar");
+        btnSemestre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btmSemestreActionPerformed(evt);
+                btnSemestreActionPerformed(evt);
             }
         });
 
@@ -126,28 +134,26 @@ public class JFrameMain extends javax.swing.JFrame {
                                 .addGap(33, 33, 33)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btnVerGrupos)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnEditarGrupos))
-                                    .addGroup(layout.createSequentialGroup()
                                         .addComponent(btnVerHorarios)
                                         .addGap(18, 18, 18)
                                         .addComponent(btnEditarHorarios))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(btnVerSalones)
                                         .addGap(18, 18, 18)
-                                        .addComponent(btnEditarSalones))))
+                                        .addComponent(btnEditarSalones))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnVerGrupos)
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(btnSemestre)
+                                            .addComponent(btnEditarGrupos)
+                                            .addComponent(btnCursos)))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(128, 128, 128)
                                 .addComponent(btnSalir))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(39, 39, 39)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnCursos)
-                                    .addComponent(btmSemestre))))))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap(53, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -155,11 +161,11 @@ public class JFrameMain extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(btmSemestre))
-                .addGap(18, 18, 18)
+                    .addComponent(btnSemestre))
+                .addGap(9, 9, 9)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(btnCursos))
@@ -224,12 +230,12 @@ public class JFrameMain extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
-    private void btmSemestreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btmSemestreActionPerformed
+    private void btnSemestreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSemestreActionPerformed
         // TODO add your handling code here:
         this.dispose();
         JFrameAsignacionSemestres semestre = new JFrameAsignacionSemestres();
         semestre.setVisible(true);
-    }//GEN-LAST:event_btmSemestreActionPerformed
+    }//GEN-LAST:event_btnSemestreActionPerformed
 
     private void btnCursosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCursosActionPerformed
         // TODO add your handling code here:
@@ -248,12 +254,12 @@ public class JFrameMain extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btmSemestre;
     private javax.swing.JButton btnCursos;
     private javax.swing.JButton btnEditarGrupos;
     private javax.swing.JButton btnEditarHorarios;
     private javax.swing.JButton btnEditarSalones;
     private javax.swing.JButton btnSalir;
+    private javax.swing.JButton btnSemestre;
     private javax.swing.JButton btnVerGrupos;
     private javax.swing.JButton btnVerHorarios;
     private javax.swing.JButton btnVerSalones;
@@ -265,4 +271,42 @@ public class JFrameMain extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     // End of variables declaration//GEN-END:variables
+
+    public void configurarBotonesSegunRol(String rol) {
+        switch (rol) {
+            case "Administrador":
+                mostrarBotonesAdmin();
+                break;
+            case "Usuario":
+                mostrarBotonesUsuario();
+                break;
+            case "Moderador":
+                mostrarBotonesModerador();
+                break;
+            // Agregar casos para otros roles si es necesario
+            default:
+            // Lógica por defecto si el rol no es reconocido
+        }
+    }
+
+    // Método para mostrar botones específicos para Administrador
+    public void mostrarBotonesAdmin() {
+        btnVerGrupos.setVisible(true);
+        btnEditarGrupos.setVisible(true);
+        // Configurar otros botones para el rol de Administrador
+    }
+
+    // Método para mostrar botones específicos para Usuario
+    public void mostrarBotonesUsuario() {
+        btnVerHorarios.setVisible(true);
+        btnEditarHorarios.setVisible(true);
+        // Configurar otros botones para el rol de Usuario
+    }
+
+    // Método para mostrar botones específicos para Moderador
+    public void mostrarBotonesModerador() {
+        btnVerSalones.setVisible(true);
+        btnEditarSalones.setVisible(true);
+        // Configurar otros botones para el rol de Moderador
+    }
 }

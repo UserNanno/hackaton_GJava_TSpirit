@@ -203,13 +203,13 @@ public class JFrameAsignacionSemestres extends javax.swing.JFrame {
 
         tblSemestre.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "id_semestre", "Año", "Ciclo Académico", "Resumen"
+                "id_semestre", "Año"
             }
         ));
         jScrollPane2.setViewportView(tblSemestre);
@@ -269,7 +269,7 @@ public class JFrameAsignacionSemestres extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(6, 6, 6)
                                         .addComponent(btnGuardar)))))))
-                .addContainerGap(120, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -295,7 +295,7 @@ public class JFrameAsignacionSemestres extends javax.swing.JFrame {
                 .addComponent(btnRetroceder)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         pack();

@@ -119,16 +119,20 @@ public class JFrameLogin extends javax.swing.JFrame {
 
         LoginController loginController = new LoginController();
 
-        if (loginController.autenticar(usuario, contrasena)) {
+        String rol = loginController.autenticar(usuario, contrasena);
+
+        if (rol != null) {
             JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso. Bienvenido " + usuario);
             this.dispose();
             JFrameMain main = new JFrameMain();
+
+            // Aquí puedes manejar la visibilidad de los botones según el rol recuperado desde la base de datos
+            main.configurarBotonesSegunRol(rol);
+
             main.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(null, "Credenciales inválidas. Inténtalo de nuevo");
         }
-
-
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
@@ -140,10 +144,8 @@ public class JFrameLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_txtContrasenaActionPerformed
 
     public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JFrameLogin().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new JFrameLogin().setVisible(true);
         });
     }
 

@@ -22,6 +22,10 @@ public class JFrameMain extends javax.swing.JFrame {
         btnEditarSalones = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         btnSalir = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        btmSemestre = new javax.swing.JButton();
+        btnCursos = new javax.swing.JButton();
 
         jButton1.setText("jButton1");
 
@@ -84,6 +88,24 @@ public class JFrameMain extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setText("Cursos");
+
+        jLabel6.setText("Semestres");
+
+        btmSemestre.setText("Editar");
+        btmSemestre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btmSemestreActionPerformed(evt);
+            }
+        });
+
+        btnCursos.setText("Editar");
+        btnCursos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCursosActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -91,38 +113,57 @@ public class JFrameMain extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(33, 33, 33)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnVerGrupos)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnEditarGrupos))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnVerHorarios)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnEditarHorarios))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnVerSalones)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnEditarSalones))))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(157, 157, 157)
+                        .addComponent(jLabel4))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnSalir)
-                            .addComponent(jLabel4))))
-                .addContainerGap(52, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(33, 33, 33)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnVerGrupos)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnEditarGrupos))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnVerHorarios)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnEditarHorarios))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnVerSalones)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnEditarSalones))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(128, 128, 128)
+                                .addComponent(btnSalir))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(39, 39, 39)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnCursos)
+                                    .addComponent(btmSemestre))))))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(jLabel4)
-                .addGap(43, 43, 43)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(btmSemestre))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(btnCursos))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(btnVerGrupos)
@@ -140,7 +181,7 @@ public class JFrameMain extends javax.swing.JFrame {
                     .addComponent(btnEditarSalones))
                 .addGap(33, 33, 33)
                 .addComponent(btnSalir)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addGap(21, 21, 21))
         );
 
         pack();
@@ -183,6 +224,20 @@ public class JFrameMain extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
+    private void btmSemestreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btmSemestreActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        JFrameAsignacionSemestres semestre = new JFrameAsignacionSemestres();
+        semestre.setVisible(true);
+    }//GEN-LAST:event_btmSemestreActionPerformed
+
+    private void btnCursosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCursosActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        JFrameAsignacionCursos cursos = new JFrameAsignacionCursos();
+        cursos.setVisible(true);
+    }//GEN-LAST:event_btnCursosActionPerformed
+
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -193,6 +248,8 @@ public class JFrameMain extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btmSemestre;
+    private javax.swing.JButton btnCursos;
     private javax.swing.JButton btnEditarGrupos;
     private javax.swing.JButton btnEditarHorarios;
     private javax.swing.JButton btnEditarSalones;
@@ -205,5 +262,7 @@ public class JFrameMain extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     // End of variables declaration//GEN-END:variables
 }

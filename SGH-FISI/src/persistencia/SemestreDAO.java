@@ -9,7 +9,7 @@ import java.util.List;
 import model.Semestre;
 
 public class SemestreDAO {
-    
+
     public List<Semestre> obtenerSemestres() {
         List<Semestre> semestres = new ArrayList<>();
         Connection conexion = ConexionDB.obtenerConexion();
@@ -17,14 +17,15 @@ public class SemestreDAO {
         ResultSet rs = null;
 
         try {
-            String query = "SELECT id_semestre, semestre_nombre FROM semestre";
+            String query = "SELECT id_semestre, anio, ciclo_academico FROM semestre";
             ps = conexion.prepareStatement(query);
             rs = ps.executeQuery();
 
             while (rs.next()) {
                 Semestre semestre = new Semestre();
                 semestre.setId(rs.getInt("id_semestre"));
-                semestre.setNombre(rs.getString("semestre_nombre"));
+                semestre.setAnio(rs.getInt("anio"));
+                semestre.setCicloAcademico(rs.getString("ciclo_academico"));
                 semestres.add(semestre);
             }
         } catch (SQLException e) {
@@ -41,9 +42,10 @@ public class SemestreDAO {
         PreparedStatement ps = null;
 
         try {
-            String query = "INSERT INTO semestre (semestre_nombre) VALUES (?)";
+            String query = "INSERT INTO semestre (anio, ciclo_academico) VALUES (?, ?)";
             ps = conexion.prepareStatement(query);
-            ps.setString(1, semestre.getNombre());
+            ps.setInt(1, semestre.getAnio());
+            ps.setString(2, semestre.getCicloAcademico());
             int filasAfectadas = ps.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException e) {
@@ -59,10 +61,11 @@ public class SemestreDAO {
         PreparedStatement ps = null;
 
         try {
-            String query = "UPDATE semestre SET semestre_nombre = ? WHERE id_semestre = ?";
+            String query = "UPDATE semestre SET anio = ?, ciclo_academico = ? WHERE id_semestre = ?";
             ps = conexion.prepareStatement(query);
-            ps.setString(1, semestre.getNombre());
-            ps.setInt(2, semestre.getId());
+            ps.setInt(1, semestre.getAnio());
+            ps.setString(2, semestre.getCicloAcademico());
+            ps.setInt(3, semestre.getId());
             int filasAfectadas = ps.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException e) {

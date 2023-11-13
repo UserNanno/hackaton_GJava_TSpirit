@@ -1,3 +1,4 @@
+
 package controller;
 
 import java.util.List;
@@ -20,10 +21,11 @@ public class SemestreController {
         return semestreDAO.agregarSemestre(semestre);
     }
 
-    public boolean actualizarSemestre(int idSemestre, String nombre) {
+    public boolean actualizarSemestre(int idSemestre, int anio, String cicloAcademico) {
         Semestre semestre = new Semestre();
         semestre.setId(idSemestre);
-        semestre.setNombre(nombre);
+        semestre.setAnio(anio);
+        semestre.setCicloAcademico(cicloAcademico);
         return semestreDAO.actualizarSemestre(semestre);
     }
 
@@ -31,13 +33,13 @@ public class SemestreController {
         return semestreDAO.eliminarSemestre(idSemestre);
     }
 
-    public boolean existeSemestre(String nombre) {
-        List<Semestre> semestres = obtenerSemestres(); // Obtener todos los semestres
+    public boolean existeSemestre(int anio, String cicloAcademico) {
+        List<Semestre> semestres = obtenerSemestres();
         for (Semestre semestre : semestres) {
-            if (semestre.getNombre().equalsIgnoreCase(nombre)) {
-                return true; // El nombre ya existe
+            if (semestre.getAnio() == anio && semestre.getCicloAcademico().equals(cicloAcademico)) {
+                return true;
             }
         }
-        return false; // El nombre no existe
+        return false;
     }
 }

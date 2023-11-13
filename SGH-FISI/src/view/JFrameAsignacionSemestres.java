@@ -1,11 +1,10 @@
 package view;
 
-import controller.SemestreController;
-import java.awt.event.ActionEvent;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import model.Semestre;
 import javax.swing.JOptionPane;
+import controller.SemestreController;
 
 public class JFrameAsignacionSemestres extends javax.swing.JFrame {
 
@@ -15,7 +14,8 @@ public class JFrameAsignacionSemestres extends javax.swing.JFrame {
 
     public JFrameAsignacionSemestres() {
         initComponents();
-        txtSemestre.setEnabled(false); // Desactiva el JTextField al inicio
+        cmbAnio.setEnabled(false); // Desactiva el comboBox al inicio
+        cmbCiclo.setEnabled(false);
         semestreController = new SemestreController();
         cargarSemestresEnTabla();
 
@@ -23,49 +23,70 @@ public class JFrameAsignacionSemestres extends javax.swing.JFrame {
             int filaSeleccionada = tblSemestre.getSelectedRow();
             if (filaSeleccionada != -1) {
                 int idSemestre = (int) tblSemestre.getValueAt(filaSeleccionada, 0);
-                String semestreSeleccionado = (String) tblSemestre.getValueAt(filaSeleccionada, 1);
-                txtSemestre.setText(semestreSeleccionado);
-                txtSemestre.setEnabled(true);
-            } else {
-                JOptionPane.showMessageDialog(null, "Por favor, selecciona un semestre para editar.", "Sin selección", JOptionPane.WARNING_MESSAGE);
+                String anio = String.valueOf(tblSemestre.getValueAt(filaSeleccionada, 1)); // Índice 1 para la columna "Año"
+                String cicloAcademico = (String) tblSemestre.getValueAt(filaSeleccionada, 2); // Índice 2 para la columna "Ciclo Académico"
+
+                // Establecer los valores seleccionados en los ComboBox
+                cmbAnio.setSelectedItem(anio);
+                cmbCiclo.setSelectedItem(cicloAcademico);
+
+                // Habilitar la edición en los ComboBox
+                cmbAnio.setEnabled(true);
+                cmbCiclo.setEnabled(true);
+
+                // Guardar el ID del semestre que se está editando
+                idSemestreEditando = idSemestre;
             }
         });
 
         btnNuevo.addActionListener((java.awt.event.ActionEvent evt) -> {
-            txtSemestre.setText(""); // Limpia el campo
-            txtSemestre.setEnabled(true); // Habilita la edición
+            // Limpiar y deseleccionar el JComboBox
+            cmbAnio.setSelectedIndex(-1); // -1 representa ningún elemento seleccionado
+            cmbCiclo.setSelectedIndex(-1);
+
+            // Habilitar el JComboBox para la selección
+            cmbAnio.setEnabled(true);
+            cmbCiclo.setEnabled(true);
         });
 
         btnGuardar.addActionListener((java.awt.event.ActionEvent evt) -> {
-            String nombreSemestre = txtSemestre.getText().trim(); // Obtiene el texto sin espacios adicionales
-
-            if (nombreSemestre.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Por favor, ingresa un nombre de semestre válido.", "Campo Vacío", JOptionPane.WARNING_MESSAGE);
-            } else if (semestreController.existeSemestre(nombreSemestre)) {
-                JOptionPane.showMessageDialog(null, "El nombre de semestre ya existe.", "Nombre Duplicado", JOptionPane.WARNING_MESSAGE);
+            if (cmbAnio.getSelectedIndex() == -1 || cmbCiclo.getSelectedIndex() == -1) {
+                JOptionPane.showMessageDialog(null, "Por favor, selecciona un año y un ciclo académico.", "Campo Vacío", JOptionPane.WARNING_MESSAGE);
             } else {
-                nombreSemestre = nombreSemestre.toUpperCase(); // Convierte el nombre a mayúsculas
+                int anio = Integer.parseInt((String) cmbAnio.getSelectedItem());
+                String cicloAcademico = (String) cmbCiclo.getSelectedItem();
 
                 if (idSemestreEditando != -1) {
-                    int opcion = JOptionPane.showConfirmDialog(null, "¿Estás seguro que deseas actualizar este semestre?", "Confirmar actualización", JOptionPane.YES_NO_OPTION);
-
-                    if (opcion == JOptionPane.YES_OPTION) {
-                        semestreController.actualizarSemestre(idSemestreEditando, nombreSemestre);
-                        cargarSemestresEnTabla();
-                        txtSemestre.setEnabled(false);
-                        idSemestreEditando = -1;
+                    if (semestreController.existeSemestre(anio, cicloAcademico)) {
+                        JOptionPane.showMessageDialog(null, "El semestre ya existe.", "Semestre Duplicado", JOptionPane.WARNING_MESSAGE);
                     } else {
-                        JOptionPane.showMessageDialog(null, "La actualización ha sido cancelada.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                        int opcion = JOptionPane.showConfirmDialog(null, "¿Estás seguro que deseas actualizar este semestre?", "Confirmar actualización", JOptionPane.YES_NO_OPTION);
+
+                        if (opcion == JOptionPane.YES_OPTION) {
+                            semestreController.actualizarSemestre(idSemestreEditando, anio, cicloAcademico);
+                            cargarSemestresEnTabla(); // Actualiza la tabla
+                            cmbAnio.setEnabled(false);
+                            cmbCiclo.setEnabled(false);
+                            idSemestreEditando = -1;
+                        } else {
+                            JOptionPane.showMessageDialog(null, "La actualización ha sido cancelada.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                        }
                     }
                 } else {
                     int opcion = JOptionPane.showConfirmDialog(null, "¿Deseas agregar este nuevo semestre?", "Confirmar adición", JOptionPane.YES_NO_OPTION);
 
                     if (opcion == JOptionPane.YES_OPTION) {
-                        Semestre semestre = new Semestre();
-                        semestre.setNombre(nombreSemestre);
-                        semestreController.agregarSemestre(semestre);
-                        cargarSemestresEnTabla();
-                        txtSemestre.setEnabled(false);
+                        if (semestreController.existeSemestre(anio, cicloAcademico)) {
+                            JOptionPane.showMessageDialog(null, "El semestre ya existe.", "Semestre Duplicado", JOptionPane.WARNING_MESSAGE);
+                        } else {
+                            Semestre semestre = new Semestre();
+                            semestre.setAnio(anio);
+                            semestre.setCicloAcademico(cicloAcademico);
+                            semestreController.agregarSemestre(semestre);
+                            cargarSemestresEnTabla(); // Actualiza la tabla
+                            cmbAnio.setEnabled(false);
+                            cmbCiclo.setEnabled(false);
+                        }
                     } else {
                         JOptionPane.showMessageDialog(null, "La adición ha sido cancelada.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
                     }
@@ -82,7 +103,7 @@ public class JFrameAsignacionSemestres extends javax.swing.JFrame {
                 if (opcion == JOptionPane.YES_OPTION) {
                     semestreController.eliminarSemestre(idSemestre);
                     cargarSemestresEnTabla();
-                    txtSemestre.setText("");
+                    // No es necesario limpiar un JComboBox, ya que no se está usando para mostrar el semestre seleccionado
                 } else {
                     JOptionPane.showMessageDialog(null, "La eliminación ha sido cancelada.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -96,12 +117,14 @@ public class JFrameAsignacionSemestres extends javax.swing.JFrame {
     private void cargarSemestresEnTabla() {
         semestreModel = new DefaultTableModel();
         semestreModel.addColumn("ID");
-        semestreModel.addColumn("Nombre");
+        semestreModel.addColumn("Año");
+        semestreModel.addColumn("Ciclo Académico");
+        semestreModel.addColumn("Año-Ciclo"); // Esta será tu nueva columna
 
         List<Semestre> semestres = semestreController.obtenerSemestres();
 
         for (Semestre semestre : semestres) {
-            semestreModel.addRow(new Object[]{semestre.getId(), semestre.getNombre()});
+            semestreModel.addRow(new Object[]{semestre.getId(), semestre.getAnio(), semestre.getCicloAcademico(), semestre.getAnio() + "-" + semestre.getCicloAcademico()});
         }
 
         tblSemestre.setModel(semestreModel);
@@ -117,13 +140,12 @@ public class JFrameAsignacionSemestres extends javax.swing.JFrame {
         btnNuevo = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
-        txtSemestre = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JButton();
         btnRetroceder = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblSemestre = new javax.swing.JTable();
-        btnAño = new javax.swing.JComboBox<>();
-        btnCicloAcademico = new javax.swing.JComboBox<>();
+        cmbAnio = new javax.swing.JComboBox<>();
+        cmbCiclo = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
@@ -165,12 +187,6 @@ public class JFrameAsignacionSemestres extends javax.swing.JFrame {
             }
         });
 
-        txtSemestre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSemestreActionPerformed(evt);
-            }
-        });
-
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -187,28 +203,28 @@ public class JFrameAsignacionSemestres extends javax.swing.JFrame {
 
         tblSemestre.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "id_semestre", "Semestre"
+                "id_semestre", "Año", "Ciclo Académico", "Resumen"
             }
         ));
         jScrollPane2.setViewportView(tblSemestre);
 
-        btnAño.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        btnAño.addActionListener(new java.awt.event.ActionListener() {
+        cmbAnio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029" }));
+        cmbAnio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAñoActionPerformed(evt);
+                cmbAnioActionPerformed(evt);
             }
         });
 
-        btnCicloAcademico.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        btnCicloAcademico.addActionListener(new java.awt.event.ActionListener() {
+        cmbCiclo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", " " }));
+        cmbCiclo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCicloAcademicoActionPerformed(evt);
+                cmbCicloActionPerformed(evt);
             }
         });
 
@@ -223,9 +239,13 @@ public class JFrameAsignacionSemestres extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(65, 65, 65)
+                        .addComponent(btnRetroceder))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 488, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(btnNuevo)
                                     .addComponent(btnEditar))
@@ -236,7 +256,7 @@ public class JFrameAsignacionSemestres extends javax.swing.JFrame {
                                             .addGroup(layout.createSequentialGroup()
                                                 .addComponent(btnEliminar)
                                                 .addGap(88, 88, 88)
-                                                .addComponent(btnAño, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(cmbAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(layout.createSequentialGroup()
                                                 .addGap(23, 23, 23)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -245,17 +265,10 @@ public class JFrameAsignacionSemestres extends javax.swing.JFrame {
                                         .addGap(18, 18, 18)
                                         .addComponent(jLabel3)
                                         .addGap(18, 18, 18)
-                                        .addComponent(btnCicloAcademico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(cmbCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(6, 6, 6)
-                                        .addComponent(btnGuardar)
-                                        .addGap(31, 31, 31))))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addComponent(btnRetroceder)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(btnGuardar)))))))
                 .addContainerGap(120, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -269,8 +282,8 @@ public class JFrameAsignacionSemestres extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnEditar)
                             .addComponent(btnEliminar)
-                            .addComponent(btnAño, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnCicloAcademico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3))
                         .addGap(18, 18, 18)
@@ -279,9 +292,7 @@ public class JFrameAsignacionSemestres extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(btnGuardar)))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnRetroceder)
-                    .addComponent(txtSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnRetroceder)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -295,15 +306,26 @@ public class JFrameAsignacionSemestres extends javax.swing.JFrame {
         int filaSeleccionada = tblSemestre.getSelectedRow();
         if (filaSeleccionada != -1) {
             int idSemestre = (int) tblSemestre.getValueAt(filaSeleccionada, 0);
-            String semestreSeleccionado = (String) tblSemestre.getValueAt(filaSeleccionada, 1);
-            txtSemestre.setText(semestreSeleccionado);
-            txtSemestre.setEnabled(true);
+            String anio = String.valueOf((Integer) tblSemestre.getValueAt(filaSeleccionada, 1));
+            String cicloAcademico = (String) tblSemestre.getValueAt(filaSeleccionada, 2);
+
+            // Establecer los valores seleccionados en los ComboBox
+            for (int i = 0; i < cmbAnio.getItemCount(); i++) {
+                if (cmbAnio.getItemAt(i).equals(anio) && cmbCiclo.getItemAt(i).equals(cicloAcademico)) {
+                    cmbAnio.setSelectedIndex(i);
+                    cmbCiclo.setSelectedIndex(i);
+                    break;
+                }
+            }
+
+            // Habilitar la edición en los ComboBox
+            cmbAnio.setEnabled(true);
+            cmbCiclo.setEnabled(true);
+
+            // Guardar el ID del semestre que se está editando
+            idSemestreEditando = idSemestre;
         }
     }//GEN-LAST:event_btnEditarActionPerformed
-
-    private void txtSemestreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSemestreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSemestreActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
@@ -311,7 +333,11 @@ public class JFrameAsignacionSemestres extends javax.swing.JFrame {
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         // TODO add your handling code here:
-        txtSemestre.setEnabled(true);
+        // Habilitar la edición en el JComboBox
+        cmbAnio.setSelectedIndex(-1); // Deseleccionar cualquier elemento seleccionado
+        cmbCiclo.setSelectedIndex(-1); // Deseleccionar cualquier elemento seleccionado
+        cmbAnio.setEnabled(true);
+        cmbCiclo.setEnabled(true);
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -326,13 +352,21 @@ public class JFrameAsignacionSemestres extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnRetrocederActionPerformed
 
-    private void btnAñoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAñoActionPerformed
+    private void checkComboBoxes() {
+        if (cmbAnio.getSelectedIndex() != -1 && cmbCiclo.getSelectedIndex() != -1) {
+            btnGuardar.setEnabled(true);
+        } else {
+            btnGuardar.setEnabled(false);
+        }
+    }
 
-    private void btnCicloAcademicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCicloAcademicoActionPerformed
+    private void cmbAnioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAnioActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnCicloAcademicoActionPerformed
+    }//GEN-LAST:event_cmbAnioActionPerformed
+
+    private void cmbCicloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCicloActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbCicloActionPerformed
 
     public static void main(String args[]) {
 
@@ -342,13 +376,13 @@ public class JFrameAsignacionSemestres extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> btnAño;
-    private javax.swing.JComboBox<String> btnCicloAcademico;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnRetroceder;
+    private javax.swing.JComboBox<String> cmbAnio;
+    private javax.swing.JComboBox<String> cmbCiclo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -356,6 +390,5 @@ public class JFrameAsignacionSemestres extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable tblSemestre;
-    private javax.swing.JTextField txtSemestre;
     // End of variables declaration//GEN-END:variables
 }

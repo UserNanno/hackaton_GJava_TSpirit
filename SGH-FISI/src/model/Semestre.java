@@ -2,8 +2,11 @@ package model;
 
 public class Semestre {
     private int id;
-    private String nombre;
-
+    private int anio;
+    private String cicloAcademico;
+    // Getters y Setters
+    
+    // ID
     public int getId() {
         return id;
     }
@@ -12,13 +15,21 @@ public class Semestre {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    // Año
+    public int getAnio() {
+        return anio;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setAnio(int anio) {
+        this.anio = anio;
     }
 
-    
+    // Ciclo Académico
+    public String getCicloAcademico() {
+        return cicloAcademico;
+    }
+
+    public void setCicloAcademico(String cicloAcademico) {
+        this.cicloAcademico = cicloAcademico;
+    }
 }

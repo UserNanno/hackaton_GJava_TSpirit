@@ -1,10 +1,11 @@
 package view;
-
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import model.Curso;
 import model.CursoHorario;
@@ -12,28 +13,25 @@ import model.Seccion;
 import persistencia.CursoDAO;
 import persistencia.HorarioDAO;
 import persistencia.SeccionDAO;
-
 public class JFrameAsignacionHorarios extends javax.swing.JFrame {
-
     private final CursoDAO cursoDAO = new CursoDAO();
     private final SeccionDAO seccionDAO = new SeccionDAO();
     private final HorarioDAO horarioDAO = new HorarioDAO();
     private List<CursoHorario> cursosHorarios; // Assuming you have a class to represent CursoHorario
     private DefaultTableModel tableModel;
-
     public JFrameAsignacionHorarios() {
         initComponents();
         initTable();
         cargarCursos(); // Load courses when the frame is initialized
-        cargarSecciones();
+        cargarSecciones(); 
         cargarHorarios();
-    }
+        cargarDias();  // Add this line to load days
 
+    }
     private void initTable() {
         // Initialize the JTable
         tableModel = (DefaultTableModel) jTable1.getModel();
     }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -47,7 +45,10 @@ public class JFrameAsignacionHorarios extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         cmbSeccion = new javax.swing.JComboBox<>();
-        cmbDia = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        cmbdia = new javax.swing.JComboBox<>();
+        jButtonAgregar = new javax.swing.JButton();
+        jButtonBorrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -73,18 +74,26 @@ public class JFrameAsignacionHorarios extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"             8am - 10am", null, null, null, null, null, null},
-                {"            10am - 12pm", null, null, null, null, null, null},
-                {"            12pm - 2pm", null, null, null, null, null, null},
-                {"             2pm - 4pm", null, null, null, null, null, null},
-                {"             4pm - 6pm", null, null, null, null, null, null},
-                {"             6pm-8pm", null, null, null, null, null, null},
-                {"             8pm-10pm", null, null, null, null, null, null}
+                {"8am - 10am", null, null, null, null, null, null},
+                {"10am - 12pm", null, null, null, null, null, null},
+                {"12pm - 2pm", null, null, null, null, null, null},
+                {"2pm - 4pm", null, null, null, null, null, null},
+                {"4pm - 6pm", null, null, null, null, null, null},
+                {"6pm - 8pm", null, null, null, null, null, null},
+                {"8pm - 10pm", null, null, null, null, null, null}
             },
             new String [] {
                 "Hora", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true, true, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel4.setText("Sección");
@@ -96,10 +105,26 @@ public class JFrameAsignacionHorarios extends javax.swing.JFrame {
             }
         });
 
-        cmbDia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona" }));
-        cmbDia.addActionListener(new java.awt.event.ActionListener() {
+        jLabel5.setText("Día");
+
+        cmbdia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona" }));
+        cmbdia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbDiaActionPerformed(evt);
+                cmbdiaActionPerformed(evt);
+            }
+        });
+
+        jButtonAgregar.setText("Agregar");
+        jButtonAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAgregarActionPerformed(evt);
+            }
+        });
+
+        jButtonBorrar.setText("Borrar");
+        jButtonBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBorrarActionPerformed(evt);
             }
         });
 
@@ -126,9 +151,15 @@ public class JFrameAsignacionHorarios extends javax.swing.JFrame {
                             .addComponent(cmbSeccion, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(cmbHorario, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(37, 37, 37)
-                                .addComponent(cmbDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(589, Short.MAX_VALUE))
+                                .addGap(60, 60, 60)
+                                .addComponent(jLabel5)
+                                .addGap(28, 28, 28)
+                                .addComponent(cmbdia, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(104, 104, 104)
+                                .addComponent(jButtonAgregar)
+                                .addGap(73, 73, 73)
+                                .addComponent(jButtonBorrar)))))
+                .addContainerGap(170, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,7 +178,10 @@ public class JFrameAsignacionHorarios extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(cmbHorario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel5)
+                    .addComponent(cmbdia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonAgregar)
+                    .addComponent(jButtonBorrar))
                 .addGap(42, 42, 42)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -161,47 +195,73 @@ public class JFrameAsignacionHorarios extends javax.swing.JFrame {
 
     private void cmbHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbHorarioActionPerformed
 
-        String selectedCurso = (String) cmbCurso.getSelectedItem();
-        String selectedSeccion = (String) cmbSeccion.getSelectedItem();
-        String selectedHorario = (String) cmbHorario.getSelectedItem();
-        String selectedDia = (String) cmbDia.getSelectedItem();
-
-        // Determine the row and column indices for the selected curso, seccion, horario, and dia
-        int rowIndex = getRowIndex(selectedHorario, selectedDia);
-        int columnIndex = getColumnIndex(selectedCurso, selectedSeccion, selectedDia);
-
-        if (rowIndex != -1 && columnIndex != -1) {
-            // Set the background color to green
-            jTable1.setValueAt("Occupied", rowIndex, columnIndex);
-            jTable1.getCellRenderer(rowIndex, columnIndex)
-                    .getTableCellRendererComponent(jTable1, null, false, false, rowIndex, columnIndex)
-                    .setBackground(Color.GREEN);
-        }
         }//GEN-LAST:event_cmbHorarioActionPerformed
+
+
+private void cargarDias() {
+    // Assuming the days are hardcoded in the table and not dynamic
+    String[] dias = {"Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"};
+    DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(dias);
+    cmbdia.setModel(model);
+}
 
     private void cmbSeccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSeccionActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbSeccionActionPerformed
 
-    private void cmbDiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbDiaActionPerformed
-        // TODO add your handling code here:
-        // TODO add your handling code here:
-        // Clear the existing items in the cmbdia JComboBox
-        cmbDia.removeAllItems();
+    private void cmbdiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbdiaActionPerformed
+    
 
-        // Populate the JComboBox with the days of the week
-        List<String> daysOfWeek = Arrays.asList("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado");
-        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(daysOfWeek.toArray(new String[0]));
-        cmbDia.setModel(model);
-    }//GEN-LAST:event_cmbDiaActionPerformed
+    }//GEN-LAST:event_cmbdiaActionPerformed
 
+    private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
+      updateTable();  // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonAgregarActionPerformed
+
+    private void jButtonBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBorrarActionPerformed
+        // TODO add your handling code here:
+           // Get the selected row and column indices
+    int selectedRow = jTable1.getSelectedRow();
+    int selectedColumn = jTable1.getSelectedColumn();
+
+    // Check if a cell is selected
+    if (selectedRow != -1 && selectedColumn != -1) {
+        // Clear the value in the selected cell
+        jTable1.setValueAt(null, selectedRow, selectedColumn);
+
+        // Optionally, you can reset the background color to the default
+        jTable1.getColumnModel().getColumn(selectedColumn).setCellRenderer(new DefaultTableCellRenderer());
+
+        // Notify the table model that the data has changed
+        tableModel.fireTableCellUpdated(selectedRow, selectedColumn);
+    } else {
+        // Display a message indicating that no cell is selected
+        JOptionPane.showMessageDialog(this, "Please select a cell to delete.", "No Cell Selected", JOptionPane.WARNING_MESSAGE);
+    }
+    }//GEN-LAST:event_jButtonBorrarActionPerformed
+private void updateTable() {
+    // Check if both horario and dia are selected
+    if (cmbHorario.getSelectedIndex() != 0 && cmbdia.getSelectedIndex() != 0) {
+        // Get the selected horario and dia
+        String selectedHorario = cmbHorario.getSelectedItem().toString();
+        String selectedDia = cmbdia.getSelectedItem().toString();
+
+        // Find the indices in the tables
+        int horarioIndex = horarioDAO.obtenerHorarioIndex(selectedHorario);
+        int diaIndex = Arrays.asList("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado").indexOf(selectedDia);
+
+        // Update the corresponding cell in the table
+        if (horarioIndex != -1 && diaIndex != -1) {
+            tableModel.setValueAt("Pintar", horarioIndex, diaIndex + 1); // Assuming you want to set the cell value to "Pintar"
+        }
+    }
+}
     private void cargarCursos() {
         List<Curso> cursos = cursoDAO.obtenerCursos();
         for (Curso curso : cursos) {
             cmbCurso.addItem(curso.getNombre());
         }
     }
-
     private void cargarSecciones() {
         // Assuming seccionDAO is a class to retrieve Seccion objects from a database
         List<Seccion> secciones = seccionDAO.obtenerSecciones();
@@ -209,7 +269,7 @@ public class JFrameAsignacionHorarios extends javax.swing.JFrame {
             cmbSeccion.addItem(seccion.getNombre());
         }
     }
-
+    
     private void cargarHorarios() {
         List<CursoHorario> horarios = horarioDAO.obtenerHorarios();
         for (CursoHorario horario : horarios) {
@@ -226,50 +286,22 @@ public class JFrameAsignacionHorarios extends javax.swing.JFrame {
         });
     }
 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cmbCurso;
-    private javax.swing.JComboBox<String> cmbDia;
     private javax.swing.JComboBox<String> cmbHorario;
     private javax.swing.JComboBox<String> cmbSeccion;
+    private javax.swing.JComboBox<String> cmbdia;
+    private javax.swing.JButton jButtonAgregar;
+    private javax.swing.JButton jButtonBorrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 
-    private int getRowIndex(String selectedHorario, String selectedDia) {
-        // Implement logic to get the row index for the selected Horario and Dia
-        // You might need to adjust this based on your table structure
-        //int horarioIndex = obtenerHorarios("Selecciona").indexOf(selectedHorario);
-        int diaIndex = obtenerDias().indexOf(selectedDia);
-
-        if (diaIndex != -1) {
-            // Assuming there are 7 rows for each day in the table
-            return (7 * diaIndex);
-        } else {
-            return -1;
-        }
-    }
-
-    private int getColumnIndex(String selectedCurso, String selectedSeccion, String selectedDia) {
-        // Implement logic to get the column index for the selected Curso, Seccion, and Dia
-        // You might need to adjust this based on your table structure
-        int cursoIndex = cmbCurso.getSelectedIndex() + 1; // Assuming cmbCurso is the first column
-        int seccionIndex = cmbSeccion.getSelectedIndex() + 1; // Assuming cmbSeccion is the second column
-        int diaIndex = obtenerDias().indexOf(selectedDia);
-
-        if (cursoIndex != -1 && seccionIndex != -1 && diaIndex != -1) {
-            return cursoIndex + (seccionIndex * 7) + (diaIndex * 7);
-        } else {
-            return -1;
-        }
-    }
-
-    private List<String> obtenerDias() {
-        // Assuming the days are hardcoded in the table and not dynamic
-        return Arrays.asList("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado");
-    }
 
 }

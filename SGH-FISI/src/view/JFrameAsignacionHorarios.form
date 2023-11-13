@@ -45,13 +45,19 @@
                           <Component id="cmbSeccion" min="-2" pref="121" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Component id="cmbHorario" min="-2" pref="121" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
-                              <Component id="cmbDia" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
+                              <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                              <Component id="cmbdia" min="-2" pref="121" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="104" max="-2" attributes="0"/>
+                              <Component id="jButtonAgregar" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
+                              <Component id="jButtonBorrar" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="589" max="32767" attributes="0"/>
+              <EmptySpace pref="170" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -74,7 +80,10 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cmbHorario" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cmbDia" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cmbdia" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonAgregar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonBorrar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="427" max="-2" attributes="0"/>
@@ -139,14 +148,14 @@
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="7" rowCount="7">
-                <Column editable="true" title="Hora" type="java.lang.Object">
-                  <Data value="             8am - 10am"/>
-                  <Data value="            10am - 12pm"/>
-                  <Data value="            12pm - 2pm"/>
-                  <Data value="             2pm - 4pm"/>
-                  <Data value="             4pm - 6pm"/>
-                  <Data value="             6pm-8pm"/>
-                  <Data value="             8pm-10pm"/>
+                <Column editable="false" title="Hora" type="java.lang.Object">
+                  <Data value="8am - 10am"/>
+                  <Data value="10am - 12pm"/>
+                  <Data value="12pm - 2pm"/>
+                  <Data value="2pm - 4pm"/>
+                  <Data value="4pm - 6pm"/>
+                  <Data value="6pm - 8pm"/>
+                  <Data value="8pm - 10pm"/>
                 </Column>
                 <Column editable="true" title="Lunes" type="java.lang.Object"/>
                 <Column editable="true" title="Martes" type="java.lang.Object"/>
@@ -222,7 +231,12 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JComboBox" name="cmbDia">
+    <Component class="javax.swing.JLabel" name="jLabel5">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="D&#xed;a"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cmbdia">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="1">
@@ -231,11 +245,27 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbDiaActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbdiaActionPerformed"/>
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButtonAgregar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Agregar"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAgregarActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButtonBorrar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Borrar"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonBorrarActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

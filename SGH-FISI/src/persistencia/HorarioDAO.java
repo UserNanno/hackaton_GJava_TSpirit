@@ -35,6 +35,16 @@ public class HorarioDAO {
 
         return horarios;
     }
+public int obtenerHorarioIndex(String selectedHorario) {
+        List<CursoHorario> horarios = obtenerHorarios();
 
+        for (int i = 0; i < horarios.size(); i++) {
+            if (horarios.get(i).getHorario().equals(selectedHorario)) {
+                return i;
+            }
+        }
+
+        return -1; // Return -1 if the horario is not found
+    }
  
 }

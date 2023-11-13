@@ -2,7 +2,9 @@ package view;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -49,6 +51,7 @@ public class JFrameAsignacionHorarios extends javax.swing.JFrame {
         cmbdia = new javax.swing.JComboBox<>();
         jButtonAgregar = new javax.swing.JButton();
         jButtonBorrar = new javax.swing.JButton();
+        btnRetroceder = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -85,15 +88,7 @@ public class JFrameAsignacionHorarios extends javax.swing.JFrame {
             new String [] {
                 "Hora", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true, true
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         jScrollPane1.setViewportView(jTable1);
 
         jLabel4.setText("Sección");
@@ -128,6 +123,8 @@ public class JFrameAsignacionHorarios extends javax.swing.JFrame {
             }
         });
 
+        btnRetroceder.setText("Retroceder");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -158,8 +155,10 @@ public class JFrameAsignacionHorarios extends javax.swing.JFrame {
                                 .addGap(104, 104, 104)
                                 .addComponent(jButtonAgregar)
                                 .addGap(73, 73, 73)
-                                .addComponent(jButtonBorrar)))))
-                .addContainerGap(170, Short.MAX_VALUE))
+                                .addComponent(jButtonBorrar)
+                                .addGap(45, 45, 45)
+                                .addComponent(btnRetroceder)))))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -181,7 +180,8 @@ public class JFrameAsignacionHorarios extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(cmbdia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonAgregar)
-                    .addComponent(jButtonBorrar))
+                    .addComponent(jButtonBorrar)
+                    .addComponent(btnRetroceder))
                 .addGap(42, 42, 42)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -224,8 +224,8 @@ private void cargarDias() {
     int selectedRow = jTable1.getSelectedRow();
     int selectedColumn = jTable1.getSelectedColumn();
 
-    // Check if a cell is selected
-    if (selectedRow != -1 && selectedColumn != -1) {
+    // Check if a cell is selected and it's not in the first column
+    if (selectedRow != -1 && selectedColumn != -1 && selectedColumn > 0) {
         // Clear the value in the selected cell
         jTable1.setValueAt(null, selectedRow, selectedColumn);
 
@@ -235,26 +235,40 @@ private void cargarDias() {
         // Notify the table model that the data has changed
         tableModel.fireTableCellUpdated(selectedRow, selectedColumn);
     } else {
-        // Display a message indicating that no cell is selected
-        JOptionPane.showMessageDialog(this, "Please select a cell to delete.", "No Cell Selected", JOptionPane.WARNING_MESSAGE);
+        // Display a message indicating that no valid cell is selected
+        JOptionPane.showMessageDialog(this, "Please select a valid cell (excluding the first column) to delete.", "No Valid Cell Selected", JOptionPane.WARNING_MESSAGE);
     }
     }//GEN-LAST:event_jButtonBorrarActionPerformed
 private void updateTable() {
     // Check if both horario and dia are selected
-    if (cmbHorario.getSelectedIndex() != 0 && cmbdia.getSelectedIndex() != 0) {
-        // Get the selected horario and dia
-        String selectedHorario = cmbHorario.getSelectedItem().toString();
-        String selectedDia = cmbdia.getSelectedItem().toString();
+Map<String, Integer> courseCountMap = new HashMap<>();
 
+if (cmbHorario.getSelectedIndex() != 0 && cmbdia.getSelectedIndex() != 0) {
+    // Get the selected horario and dia
+    String selectedHorario = cmbHorario.getSelectedItem().toString();
+    String selectedDia = cmbdia.getSelectedItem().toString();
+
+    // Form a key for the (horario, dia) combination
+    String key = selectedHorario + "_" + selectedDia;
+
+    // Check if the course count for the given combination has reached the maximum limit
+    if (courseCountMap.containsKey(key) && courseCountMap.get(key) >= 2) {
+        JOptionPane.showMessageDialog(this, "You can add a course to this combination a maximum of 2 times.", "Limit Exceeded", JOptionPane.WARNING_MESSAGE);
+    } else {
         // Find the indices in the tables
         int horarioIndex = horarioDAO.obtenerHorarioIndex(selectedHorario);
         int diaIndex = Arrays.asList("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado").indexOf(selectedDia);
 
         // Update the corresponding cell in the table
         if (horarioIndex != -1 && diaIndex != -1) {
-            tableModel.setValueAt("Pintar", horarioIndex, diaIndex + 1); // Assuming you want to set the cell value to "Pintar"
+            // Assuming jTable1 is your JTable
+            jTable1.setValueAt("Pintar", horarioIndex, diaIndex + 1); // Assuming you want to set the cell value to "Pintar"
+
+            // Update the course count for the given combination
+            courseCountMap.put(key, courseCountMap.getOrDefault(key, 0) + 1);
         }
     }
+}
 }
     private void cargarCursos() {
         List<Curso> cursos = cursoDAO.obtenerCursos();
@@ -288,6 +302,7 @@ private void updateTable() {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRetroceder;
     private javax.swing.JComboBox<String> cmbCurso;
     private javax.swing.JComboBox<String> cmbHorario;
     private javax.swing.JComboBox<String> cmbSeccion;

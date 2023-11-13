@@ -162,6 +162,8 @@ public class JFrameMain extends javax.swing.JFrame {
 
     private void btnVerHorariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerHorariosActionPerformed
         // TODO add your handling code here:
+        JFrameAsignacionHorarios horarios = new JFrameAsignacionHorarios();
+        horarios.setVisible(true);
     }//GEN-LAST:event_btnVerHorariosActionPerformed
 
     private void btnEditarHorariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarHorariosActionPerformed
